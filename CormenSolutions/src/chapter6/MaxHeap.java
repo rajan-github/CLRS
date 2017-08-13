@@ -27,7 +27,7 @@ public class MaxHeap<E extends Comparable<E>> {
 		return 2 * i + 2;
 	}
 
-	private void maxHeapify(int i) {
+	public void maxHeapify(int i) {
 		if (i >= 0 && i < this.heapSize) {
 			int left = left(i), right = right(i), largest = i;
 			if (left < heapSize && array[left].compareTo(array[largest]) > 0) {
@@ -46,7 +46,7 @@ public class MaxHeap<E extends Comparable<E>> {
 
 	}
 
-	private void buildMaxHeap() {
+	public void buildMaxHeap() {
 		int i = this.array.length / 2;
 		while (i >= 0) {
 			maxHeapify(i);
@@ -54,7 +54,7 @@ public class MaxHeap<E extends Comparable<E>> {
 		}
 	}
 
-	private void heapSort() {
+	public void heapSort() {
 		buildMaxHeap();
 		while (this.heapSize > 0) {
 			E temp = this.array[0];
