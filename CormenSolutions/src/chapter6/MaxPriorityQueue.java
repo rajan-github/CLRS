@@ -48,20 +48,12 @@ public class MaxPriorityQueue<E extends ObjectWithKey> {
 
 	public void insert(E object) {
 		ensureSize();
+		int tempKey = object.getKey();
+		object.setKey(Integer.MIN_VALUE);
 		this.data[this.queueSize] = object;
 		int i = this.queueSize;
 		queueSize += 1;
-		while (i > 0) {
-			int parent = parent(i);
-			if (this.data[parent].getKey() < this.data[i].getKey()) {
-				E temp = this.data[parent];
-				this.data[parent] = this.data[i];
-				this.data[i] = temp;
-				i = parent(i);
-			} else {
-				break;
-			}
-		}
+		increaseKey(i, tempKey);
 	}
 
 	public E extractMax() {
@@ -94,6 +86,23 @@ public class MaxPriorityQueue<E extends ObjectWithKey> {
 			}
 		}
 
+	}
+
+	public void increaseKey(int index, int key) {
+		if ((index > 0 && index < this.queueSize) && key > this.data[index].getKey()) {
+			this.data[index].setKey(key);
+			while (index > 0) {
+				int parent = parent(index);
+				if (this.data[parent].getKey() < this.data[index].getKey()) {
+					E temp = this.data[parent];
+					this.data[parent] = this.data[index];
+					this.data[index] = temp;
+					index = parent(index);
+				} else {
+					break;
+				}
+			}
+		}
 	}
 
 	@Override
