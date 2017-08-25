@@ -17,6 +17,7 @@ public class MaxHeap<E extends Comparable<E>> {
 		super();
 		this.array = array;
 		this.heapSize = array.length;
+		buildMaxHeap();
 	}
 
 	private int left(int i) {
@@ -65,6 +66,18 @@ public class MaxHeap<E extends Comparable<E>> {
 		}
 	}
 
+	public E heapDelete(int index) {
+		E deleted = null;
+		if (index >= 0 && index < this.heapSize) {
+			deleted = this.array[index];
+			this.array[index] = this.array[this.heapSize - 1];
+			this.array[this.heapSize - 1] = null;
+			this.heapSize -= 1;
+			this.maxHeapify(index);
+		}
+		return deleted;
+	}
+
 	@Override
 	public String toString() {
 		return "MaxHeap [array=" + Arrays.toString(array) + ", heapSize=" + heapSize + "]";
@@ -76,7 +89,17 @@ public class MaxHeap<E extends Comparable<E>> {
 		// Integer[] array = { 4, 1, 3, 2, 16, 9, 10, 14, 8, 7 };
 		Integer[] array = { 5, 13, 2, 25, 7, 17, 20, 8, 4 };
 		MaxHeap<Integer> heap = new MaxHeap<>(array);
-		heap.heapSort();
+		System.out.println(heap);
+		System.out.println("Doing delete operation-");
+		System.out.println(heap.heapDelete(2));
+		System.out.println(heap);
+		System.out.println(heap.heapDelete(2));
+		System.out.println(heap);
+		System.out.println(heap.heapDelete(2));
+		System.out.println(heap);
+		System.out.println(heap.heapDelete(2));
+		System.out.println(heap);
+		System.out.println(heap.heapDelete(2));
 		System.out.println(heap);
 	}
 }
