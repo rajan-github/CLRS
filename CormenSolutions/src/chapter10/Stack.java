@@ -25,8 +25,8 @@ public class Stack<E> {
 		if (isEmpty()) {
 			throw new IndexOutOfBoundsException("Stack is empty!");
 		}
-		E temp = data[size];
-		data[size] = null;
+		E temp = data[size - 1];
+		data[size - 1] = null;
 		size--;
 		return temp;
 	}
@@ -41,7 +41,7 @@ public class Stack<E> {
 
 	public static void main(String args[]) {
 		Stack<Integer> stack = new Stack<>();
-		Integer[] randoms = { 2, 3, 4, 6, 7, 3, 6, 7, 0 };
+		Integer[] randoms = { 2, 3, 4, 6, 7, 3, 6, 7, 0, 11 };
 		for (Integer item : randoms) {
 			stack.push(item);
 		}
