@@ -23,9 +23,9 @@ public class DoublyLinkedList<E> {
 			return data;
 		}
 
-		public void setData(E data) {
-			this.data = data;
-		}
+		// public void setData(E data) {
+		// this.data = data;
+		// }
 
 		public Node<E> getPrev() {
 			return prev;
@@ -61,7 +61,8 @@ public class DoublyLinkedList<E> {
 				return false;
 			if (getClass() != obj.getClass())
 				return false;
-			Node other = (Node) obj;
+			@SuppressWarnings("unchecked")
+			Node<E> other = (Node<E>) obj;
 			if (data == null) {
 				if (other.data != null)
 					return false;
@@ -95,6 +96,9 @@ public class DoublyLinkedList<E> {
 	}
 
 	public void insert(E item) {
+		if (item == null) {
+			throw new IllegalArgumentException("Null cannot be inserted");
+		}
 		Node<E> newNode = new Node<>(item);
 		newNode.setPrev(nilNode.getPrev());
 		newNode.setNext(nilNode);
