@@ -1,9 +1,14 @@
 package chapter10;
 
+import java.util.Random;
+
 /**
  * This class implements the rooted tree. It has left child and right sibling
  * link as left and right respectively. Parent attribute of node represents
- * parent of this node and root node has null as the parent node.
+ * parent of this node and root node has null as the parent node. This
+ * implementation only allows three child to one node and thus in one chain
+ * there can be at most three nodes though we can change it by changing the
+ * value of WIDTH constant.
  * 
  * @author rajan
  *
@@ -31,7 +36,7 @@ public class RootedTree<E> {
 			while (leftMostNode != null) {
 				Node<E> currentNode = leftMostNode, insertedNode = null;
 				while (insertedNode == null && currentNode != null) {
-					insertedNode = insert(currentNode, newNode);
+					insertedNode = helperToInsert(currentNode, newNode);
 					currentNode = currentNode.getRight();
 				}
 				if (insertedNode == null) {
@@ -45,7 +50,15 @@ public class RootedTree<E> {
 		}
 	}
 
-	public Node<E> insert(Node<E> currentNode, Node<E> newNode) {
+	/**
+	 * This is auxiliary insert method which is used by main insert method which
+	 * takes only value for insertion.
+	 * 
+	 * @param currentNode
+	 * @param newNode
+	 * @return
+	 */
+	public Node<E> helperToInsert(Node<E> currentNode, Node<E> newNode) {
 		Node<E> insertedNode = null;
 		if (currentNode.getLeft() == null) {
 			currentNode.setLeft(newNode);
@@ -67,35 +80,47 @@ public class RootedTree<E> {
 		return insertedNode;
 	}
 
-	// TODO: complete it
+	/**
+	 * This method traverses the whole tree and prints the values stored in it. It
+	 * uses stack as auxiliary storage and time taken to traverse the whole tree in
+	 * O(n).
+	 */
 	public void traverseTree() {
 		if (isEmpty()) {
 			System.out.println("Tree is empty!");
 		} else {
-			Node<E> leftMostNode = root;
-			while (leftMostNode != null) {
-				// System.out.print(leftMostNode.getData() + ", ");
-				Node<E> currentNode = leftMostNode;
-				while (currentNode != null) {
-					System.out.print(currentNode.getData() + ", ");
-					Node<E> childNode = currentNode.getLeft();
-					while (childNode != null) {
-						System.out.print(childNode.getData() + ", ");
-						childNode = childNode.getRight();
-					}
-					currentNode = currentNode.getRight();
+			StackUsingLinkedList<Node<E>> stack = new StackUsingLinkedList<>();
+			Node<E> current = root.getLeft();
+			stack.push(root);
+			while (!stack.isEmpty()) {
+				while (current.getLeft() != null) {
+					stack.push(current);
+					current = current.getLeft();
 				}
 
-				leftMostNode = leftMostNode.getLeft();
+				while (current != null) {
+					System.out.println(current.getData() + ", ");
+					current = current.getRight();
+				}
+				current = stack.pop();
+				System.out.println(current.getData() + ", ");
+				if (current.getRight() == null && !stack.isEmpty()) {
+					current = stack.pop();
+					System.out.println(current.getData() + ", ");
+					current = current.getRight();
+				} else {
+					current = current.getRight();
+				}
 			}
+
 		}
 	}
 
 	public static void main(String args[]) {
 		RootedTree<Integer> tree = new RootedTree<>();
-		Integer[] randoms = { 2, 3, 4, 6, 7, 3, 6, 7, 0, 11 };
-		for (Integer item : randoms) {
-			tree.insert(item);
+		Random random = new Random();
+		for (int i = 0; i < 10000; i++) {
+			tree.insert(random.nextInt());
 		}
 		System.out.println("Items inserted!");
 		tree.traverseTree();
